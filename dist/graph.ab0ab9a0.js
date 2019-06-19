@@ -28490,10 +28490,6 @@ var d3 = _interopRequireWildcard(require("d3"));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 var dims = {
   height: 300,
   width: 300,
@@ -28502,83 +28498,9 @@ var dims = {
 var cent = {
   x: dims.width / 2 + 5,
   y: dims.height / 2 + 5
-}; // create svg container
-
+};
 var svg = d3.select('.canvas').append('svg').attr('width', dims.width + 150).attr('height', dims.height + 150);
-var graph = svg.append('g').attr("transform", "translate(".concat(cent.x, ", ").concat(cent.y, ")")); // translates the graph group to the middle of the svg container
-
-var pie = d3.pie().sort(null).value(function (d) {
-  return d.cost;
-}); // the value we are evaluating to create the pie angles
-
-var arcPath = d3.arc().outerRadius(dims.radius).innerRadius(dims.radius / 2); // update function
-
-var update = function update(data) {
-  // join enhanced (pie) data to path elements
-  var paths = graph.selectAll('path').data(pie(data));
-  paths.enter().append('path').attr('class', 'arc').attr('d', arcPath).attr('stroke', '#fff').attr('stroke-width', 3);
-}; // data array and firestore
-
-
-var data = [];
-db.collection('expenses').orderBy('cost').onSnapshot(function (res) {
-  res.docChanges().forEach(function (change) {
-    var doc = _objectSpread({}, change.doc.data(), {
-      id: change.doc.id
-    });
-
-    switch (change.type) {
-      case 'added':
-        data.push(doc);
-        break;
-
-      case 'modified':
-        var index = data.findIndex(function (item) {
-          return item.id == doc.id;
-        });
-        data[index] = doc;
-        break;
-
-      case 'removed':
-        data = data.filter(function (item) {
-          return item.id !== doc.id;
-        });
-        break;
-
-      default:
-        break;
-    }
-  }); // call the update function
-
-  update(data);
-});
-},{"d3":"node_modules/d3/index.js"}],"src/index.js":[function(require,module,exports) {
-"use strict";
-
-require("./graph.js");
-
-var form = document.querySelector('form');
-var name = document.getElementById('name');
-var cost = document.getElementById('cost');
-var error = document.getElementById('error');
-form.addEventListener('submit', function (e) {
-  e.preventDefault();
-
-  if (name.value && cost.value) {
-    var item = {
-      name: name.value,
-      cost: +cost.value
-    };
-    db.collection('expenses').add(item).then(function (res) {
-      name.value = '';
-      cost.value = '';
-      error.textContent = '';
-    });
-  } else {
-    error.textContent = 'Please enter values before submitting!';
-  }
-});
-},{"./graph.js":"src/graph.js"}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"d3":"node_modules/d3/index.js"}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -28781,5 +28703,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/index.js"], null)
-//# sourceMappingURL=/src.a2b27638.js.map
+},{}]},{},["../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/graph.js"], null)
+//# sourceMappingURL=/graph.ab0ab9a0.js.map
