@@ -28511,12 +28511,21 @@ var pie = d3.pie().sort(null).value(function (d) {
   return d.cost;
 }); // the value we are evaluating to create the pie angles
 
-var arcPath = d3.arc().outerRadius(dims.radius).innerRadius(dims.radius / 2); // update function
+var arcPath = d3.arc().outerRadius(dims.radius).innerRadius(dims.radius / 2);
+var colour = d3.scaleOrdinal(d3['schemeSet3']); // update function
 
 var update = function update(data) {
-  // join enhanced (pie) data to path elements
-  var paths = graph.selectAll('path').data(pie(data));
-  paths.enter().append('path').attr('class', 'arc').attr('d', arcPath).attr('stroke', '#fff').attr('stroke-width', 3);
+  // update colour scale domain
+  colour.domain(data.map(function (_ref) {
+    var name = _ref.name;
+    return name;
+  })); // join enhanced (pie) data to path elements
+
+  var paths = graph.selectAll('path') //new array with angles attached
+  .data(pie(data));
+  paths.enter().append('path').attr('class', 'arc').attr('d', arcPath).attr('stroke', '#fff').attr('stroke-width', 3).attr('fill', function (d) {
+    return colour(d.data.name);
+  });
 }; // data array and firestore
 
 
@@ -28578,7 +28587,7 @@ form.addEventListener('submit', function (e) {
     error.textContent = 'Please enter values before submitting!';
   }
 });
-},{"./graph.js":"src/graph.js"}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./graph.js":"src/graph.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -28606,7 +28615,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55732" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58337" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -28781,5 +28790,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/index.js"], null)
+},{}]},{},["../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/index.js"], null)
 //# sourceMappingURL=/src.a2b27638.js.map
